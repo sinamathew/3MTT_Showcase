@@ -1,0 +1,45 @@
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f0fff0; /* Light green */
+}
+
+header {
+  text-align: center;
+  padding: 20px 0;
+  border-bottom: 1px solid #ddd; /* Light gray border */
+}
+
+h1, h2 {
+  margin: 0;
+  color: #333; /* Dark green */
+}
+
+main {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+section {
+  margin-bottom: 20px;
+}
+
+p {
+  line-height: 1.5;
+}
+
+.project-button {
+  background-color: #4CAF50; /* Green */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+  text-decoration: none;
+}
+
+.project-button:hover {
+  background-color: #3e8e41; /* Darker green */
+}
