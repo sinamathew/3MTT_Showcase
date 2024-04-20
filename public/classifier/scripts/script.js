@@ -1,10 +1,10 @@
-token = process.env.TEACHABLE_MACHINE_TOKEN;
-const URL = 'https://teachablemachine.withgoogle.com/models/' + token + '/';
+const token = process.env.TEACHABLE_MACHINE_TOKEN;
+const URL = 'https://teachablemachine.withgoogle.com/models/';
 let model, webcam, labelContainer, maxPredictions;
 
 async function init() {
-    const modelURL = URL + "model.json";
-    const metadataURL = URL + "metadata.json";
+    const modelURL = URL + token + "/model.json";
+    const metadataURL = URL + token + "/metadata.json";
 
     model = await tmImage.load(modelURL, metadataURL);
     maxPredictions = model.getTotalClasses();

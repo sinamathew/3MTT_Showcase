@@ -10,7 +10,6 @@ app.use(express.json());
 
 // Serves static files from the 'public' directory
 app.use(express.static('public'));
-// Handle POST requests to the '/summarize' endpoint
 
 // Serve 'public/summarizer' directory for '/summarizer' route
 app.use('/summarizer', express.static('public/summarizer'));

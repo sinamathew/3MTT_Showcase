@@ -17,7 +17,7 @@ async function summarizeText(text) {
     maxBodyLength: Infinity,
     url: 'https://api-inference.huggingface.co/models/facebook/bart-large-cnn',
     headers: { 
-      'Content-Type': 'application/json', 
+      'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + process.env.FACEBOOK_BART_TOKEN
     },
     data : data
