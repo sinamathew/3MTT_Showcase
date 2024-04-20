@@ -1,9 +1,9 @@
-const baseURL = process.env.CLASSIFIER_URL.toString();
+const baseURL = process.env.CLASSIFIER_URL;
 let model, webcam, labelContainer, maxPredictions;
 
 async function init() {
-    const modelURL = baseURL + "model.json";
-    const metadataURL = baseURL + token + "metadata.json";
+    const modelURL = `${baseURL}model.json`;
+    const metadataURL = `${baseURL}metadata.json`;
 
     model = await tmImage.load(modelURL, metadataURL);
     maxPredictions = model.getTotalClasses();
