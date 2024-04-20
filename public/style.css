@@ -43,3 +43,25 @@ p {
 .project-button:hover {
   background-color: #3e8e41; /* Darker green */
 }
+
+/* Media Query for Mobile Devices */
+@media only screen and (max-width: 600px) {
+  body {
+    padding: 10px;
+  }
+
+  main {
+    max-width: 100%;
+  }
+
+  .project-button {
+    margin-right: 0;
+    margin-bottom: 10px;
+    display: block;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    align-self: center;
+    text-align: center;
+  }
+}
