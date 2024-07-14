@@ -3,78 +3,94 @@ let model, webcam, labelContainer, maxPredictions;
 let isRunning = false;
 
 async function init() {
-  try {
-    const modelURL = URL + "model.json";
-    const metadataURL = URL + "metadata.json";
-
-    model = await tmImage.load(modelURL, metadataURL);
-    maxPredictions = model.getTotalClasses();
-
-    const flip = true;
-    webcam = new tmImage.Webcam(200, 200, flip);
-    await webcam.setup();
-
-    document.getElementById("webcam-container").appendChild(webcam.canvas);
-    labelContainer = document.getElementById("label-container");
-    for (let i = 0; i < maxPredictions; i++) {
-      labelContainer.appendChild(document.createElement("div"));
-    }
-
-    const startButton = document.querySelector(".button");
-    startButton.addEventListener("click", toggleClassification);
-
-    startButton.textContent = "Start";
-  } catch (error) {
-    console.error("Failed to initialize the model or webcam:", error);
-  }
-}
-
-async function loop() {
-  if (isRunning) {
     try {
-      webcam.update();
-      await predict();
-    } catch (error) {
-      console.error("Error in loop:", error);
-    }
-    window.requestAnimationFrame(loop);
-  }
-}
+        const modelURL = URL + "model.json";
+        const metadataURL = URL + "metadata.json";
+        model = await tmImage.load(modelURL, metadataURL);
+        maxPredictions = model.getTotalClasses();
 
-async function predict() {
-  try {
-    const prediction = await model.predict(webcam.canvas);
-    for (let i = 0; i < maxPredictions; i++) {
-      const classPrediction =
-        prediction[i].className + ": " + (prediction[i].probability * 100).toFixed(2) + "%";
-      labelContainer.childNodes[i].innerHTML = classPrediction;
+        const flip = true;
+        webcam = new tmImage.Webcam(200, 200, flip);
+        await webcam.setup();
+        const webcamContainer = document.getElementById("webcam-container");
+        if (!webcamContainer.hasChildNodes()) {
+            webcamContainer.appendChild(webcam.canvas);
+        }
+
+        labelContainer = document.getElementById("label-container");
+        labelContainer.innerHTML = '';
+        for (let i = 0; i < maxPredictions; i++) {
+            labelContainer.appendChild(document.createElement("div"));
+        }
+
+        const startButton = document.querySelector(".button");
+        startButton.addEventListener("click", toggleClassification);
+        startButton.textContent = "Start";
+        
+        console.log("Initialization complete");
+    } catch (error) {
+        console.error("Failed to initialize the model or webcam:", error);
     }
-  } catch (error) {
-    console.error("Error in predict:", error);
-  }
 }
 
 function toggleClassification() {
-  isRunning = !isRunning;
-  const startButton = document.querySelector(".button");
-  if (isRunning) {
-    startButton.textContent = "Stop";
+    if (!isRunning) {
+        startClassification();
+    } else {
+        stopClassification();
+    }
+}
+
+function startClassification() {
+    isRunning = true;
     webcam.play();
-    window.requestAnimationFrame(loop);
-  } else {
-    startButton.textContent = "Start";
+    updateStatus("Running...");
+    console.log("Classification started");
+    requestAnimationFrame(classificationLoop);
+}
+
+function stopClassification() {
+    isRunning = false;
     webcam.stop();
-    clearPredictions();
-  }
+    updateStatus("Stopped");
+    console.log("Classification stopped");
 }
 
-function clearPredictions() {
-  for (let i = 0; i < maxPredictions; i++) {
-    labelContainer.childNodes[i].innerHTML = "";
-  }
+async function classificationLoop() {
+    if (!isRunning) return;
+
+    try {
+        webcam.update();
+        await predict();
+    } catch (error) {
+        console.error("Error in classification loop:", error);
+    }
+
+    console.log("Frame processed at", new Date().toISOString());
+    requestAnimationFrame(classificationLoop);
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  init();
-});
+async function predict() {
+    try {
+        const prediction = await model.predict(webcam.canvas);
+        for (let i = 0; i < maxPredictions; i++) {
+            const classPrediction =
+                prediction[i].className + ": " + (prediction[i].probability * 100).toFixed(2) + "%";
+            labelContainer.childNodes[i].innerHTML = classPrediction;
+        }
+    } catch (error) {
+        console.error("Error in predict:", error);
+        throw error;
+    }
+}
+
+function updateStatus(message) {
+    const startButton = document.querySelector(".button");
+    const statusDisplay = document.getElementById("status-display");
+    
+    startButton.textContent = isRunning ? "Stop" : "Start";
+    statusDisplay.textContent = message;
+}
+
+document.addEventListener("DOMContentLoaded", init);
 
