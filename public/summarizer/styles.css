@@ -162,3 +162,74 @@ textarea {
         transform: rotate(1turn);
     }
 }
+
+/* Styles for screens up to 768px wide */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .text-box {
+    width: 100%;
+  }
+
+  textarea {
+    height: 200px;
+  }
+
+  .cta-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cta-text {
+    flex-basis: auto;
+    padding-right: 0;
+    text-align: center;
+  }
+
+  .cta-button {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  img {
+    max-height: 150px;
+  }
+}
+
+/* Styles for screens up to 480px wide */
+@media (max-width: 480px) {
+  h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  p {
+    font-size: 16px;
+  }
+
+  .text-box {
+    padding: 10px;
+  }
+
+  textarea {
+    height: 150px;
+  }
+
+  .submit-button {
+    padding: 8px 16px;
+  }
+
+  .cta-content h2 {
+    font-size: 20px;
+  }
+
+  .cta-content p {
+    font-size: 14px;
+  }
+
+  .cta-button {
+    font-size: 14px;
+  }
+}

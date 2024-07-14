@@ -1,5 +1,6 @@
 const URL = "https://teachablemachine.withgoogle.com/models/Cfk9Ws6vQ/";
 let model, webcam, labelContainer, maxPredictions;
+let isRunning = false;
 
 async function init() {
     const modelURL = URL + "model.json";
@@ -19,11 +20,18 @@ async function init() {
     for (let i = 0; i < maxPredictions; i++) {
         labelContainer.appendChild(document.createElement("div"));
     }
+
+    // Get the button element
+    const startButton = document.querySelector(".button");
+    startButton.textContent = "Start";
+    startButton.addEventListener("click", toggleClassification);
 }
 
 async function loop() {
-    webcam.update();
-    await predict();
+    if (isRunning) {
+        webcam.update();
+        await predict();
+    }
     window.requestAnimationFrame(loop);
 }
 
@@ -36,3 +44,12 @@ async function predict() {
     }
 }
 
+function toggleClassification() {
+    isRunning = !isRunning;
+    const startButton = document.querySelector(".button");
+    if (isRunning) {
+        startButton.textContent = "Stop";
+    } else {
+        startButton.textContent = "Start";
+    }
+}
